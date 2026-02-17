@@ -11,13 +11,15 @@ export async function GET() {
     connection: false,
     templatesTable: false,
     memesTable: false,
+    templatesCount: 0,
+    memesCount: 0,
     errors: [] as string[],
   };
 
   try {
     // Test 1: Check if templates table exists and is accessible
     console.log('Checking templates table...');
-    const { data: templatesData, error: templatesError } = await supabase
+    const { error: templatesError } = await supabase
       .from('templates')
       .select('id')
       .limit(1);
@@ -35,7 +37,7 @@ export async function GET() {
 
     // Test 2: Check if memes table exists and is accessible
     console.log('Checking memes table...');
-    const { data: memesData, error: memesError } = await supabase
+    const { error: memesError } = await supabase
       .from('memes')
       .select('id')
       .limit(1);
@@ -79,11 +81,12 @@ export async function GET() {
         : '⚠️ Database connection established but tables need to be created.',
     });
 
-  } catch (error: any) {
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     return NextResponse.json({
       success: false,
       connection: false,
-      error: error.message,
+      error: errorMessage,
       message: '❌ Failed to connect to database',
     }, { status: 500 });
   }

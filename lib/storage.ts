@@ -1,11 +1,25 @@
 import { Storage } from '@google-cloud/storage';
-import path from 'path';
-import fs from 'fs';
 
-const storage = new Storage({
+// Initialize Storage with credentials from environment or file
+interface StorageConfig {
+  projectId?: string;
+  credentials?: Record<string, unknown>;
+  keyFilename?: string;
+}
+
+const storageConfig: StorageConfig = {
   projectId: process.env.GCS_PROJECT_ID,
-  keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS,
-});
+};
+
+// In production (Vercel), use credentials from JSON env var
+// In development, use keyFilename
+if (process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON) {
+  storageConfig.credentials = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON);
+} else if (process.env.GOOGLE_APPLICATION_CREDENTIALS) {
+  storageConfig.keyFilename = process.env.GOOGLE_APPLICATION_CREDENTIALS;
+}
+
+const storage = new Storage(storageConfig);
 
 const bucketName = process.env.GCS_BUCKET_NAME || '';
 const bucket = storage.bucket(bucketName);

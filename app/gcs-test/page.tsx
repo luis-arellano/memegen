@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function GCSTestPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-500 to-pink-500 p-8">
@@ -79,12 +81,12 @@ export default function GCSTestPage() {
             </div>
 
             <div className="mt-6 text-center">
-              <a
+              <Link
                 href="/"
                 className="inline-block bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition"
               >
                 Return to Home
-              </a>
+              </Link>
             </div>
           </div>
         </div>
