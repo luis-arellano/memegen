@@ -54,3 +54,31 @@ Activity Document
 **Screenshot:** screenshots/supabase-connection.png
 
 **Status:** All verification steps passed - marking task as complete (passes: true)
+
+## 2026-02-16 - Google Cloud Storage Upload Complete
+
+**Task:** Google Cloud Storage bucket accepts image uploads
+
+**Changes Made:**
+- Installed @google-cloud/storage package (v7.x with 63 dependencies)
+- Created storage utility library at lib/storage.ts with uploadToGCS, uploadBufferToGCS, and checkBucketAccess functions
+- Configured GCS environment variables in .env (bucket name, project ID, credentials path)
+- Created test upload script at scripts/test-gcs-upload.mjs
+- Updated code to work with uniform bucket-level access (removed legacy ACL usage)
+- Verified bucket public access configuration with gsutil
+- Created GCS test verification page at /gcs-test
+- Used Playwright to capture screenshot of test results
+
+**Verification Steps Completed:**
+✅ GCS bucket memegen-images-487417 exists and is accessible
+✅ Service account credentials configured correctly
+✅ Environment variables added to .env
+✅ Test upload script successfully uploaded sample image
+✅ Image appears in GCS bucket (verified via API)
+✅ Public URL returns the uploaded image (Status: 200)
+✅ No authentication errors occurred during upload
+✅ Uniform bucket-level access configured correctly
+
+**Screenshot:** screenshots/gcs-upload.png
+
+**Status:** All verification steps passed - marking task as complete (passes: true)

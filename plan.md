@@ -59,7 +59,7 @@ We are building a website called Memegen, similar to the internal site at Google
     "Verify public URL returns the image",
     "Check no authentication errors occur"
   ],
-  "passes": false
+  "passes": true
 }
 
 {
