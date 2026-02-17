@@ -96,7 +96,7 @@ const templates = [
   },
   {
     name: 'Bernie Sanders',
-    image_url: 'https://i.imgflip.com/4x6d.jpg',
+    image_url: 'https://i.imgflip.com/4ndo5l.jpg',
     category: 'Politics'
   }
 ];
