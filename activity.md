@@ -166,3 +166,40 @@ Activity Document
 **Screenshot:** screenshots/templates-seeded.png
 
 **Status:** All verification steps passed - marking task as complete (passes: true)
+
+## 2026-02-17 - User Can Browse Template Library
+
+**Task:** User can browse template library
+
+**Changes Made:**
+- Created user-facing template browsing page at /templates
+- Implemented responsive grid layout (2-5 columns depending on screen size)
+- Added hover effects and animations for better UX
+- Configured Row Level Security (RLS) policies for templates table
+  - Created policy to allow public read access via Supabase client
+  - Fixed issue where templates were accessible via direct PostgreSQL but not via Supabase API
+- Created comprehensive Playwright test script for automated verification
+- Tested on both desktop (1920x1080) and mobile (375x667) viewports
+
+**Verification Steps Completed:**
+✅ Navigate to /templates page loads successfully
+✅ Grid of template thumbnails displays correctly
+✅ 12 templates are visible (exceeds minimum of 10)
+✅ Each template shows image from imgflip CDN
+✅ Template names are displayed below each image
+✅ Template categories shown (Reactions, Decisions, etc.)
+✅ Responsive layout works on mobile viewport (375x667)
+✅ Responsive layout works on desktop viewport (1920x1080)
+✅ No console errors in browser
+✅ Hover effects and transitions work smoothly
+
+**Roadblocks & Solutions:**
+- Templates initially not visible via Supabase client (0 results)
+  - Root cause: Row Level Security (RLS) was enabled but no policies existed for public read access
+  - Solution: Created RLS policies using direct PostgreSQL connection to allow anon/authenticated read access
+  - Created script fix-rls-policies.mjs to configure proper RLS policies
+- Dev server used port 3002 (port 3000 was in use) - no issues
+
+**Screenshot:** screenshots/browse-template-library.png
+
+**Status:** All verification steps passed - marking task as complete (passes: true)

@@ -106,7 +106,7 @@ We are building a website called Memegen, similar to the internal site at Google
     "Scroll through templates on mobile viewport",
     "Confirm responsive layout works on desktop"
   ],
-  "passes": false
+  "passes": true
 }
 
 {
