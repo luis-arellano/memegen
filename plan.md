@@ -91,7 +91,7 @@ We are building a website called Memegen, similar to the internal site at Google
     "Check template images are accessible via URLs",
     "Confirm all template IDs are unique"
   ],
-  "passes": false
+  "passes": true
 }
 
 {
