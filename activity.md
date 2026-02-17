@@ -27,3 +27,30 @@ Activity Document
 **Screenshot:** screenshots/nextjs-initialization.png
 
 **Status:** All steps verified - marking task as complete (passes: true)
+
+## 2026-02-16 - Supabase Database Setup Complete
+
+**Task:** Supabase database connects and tables are created
+
+**Changes Made:**
+- Connected to Supabase PostgreSQL database directly
+- Created `templates` table with columns: id, name, image_url, category, created_at
+- Created `memes` table with columns: id, template_id, top_text, bottom_text, image_url, upvotes, created_at, updated_at
+- Added foreign key relationship: memes.template_id references templates.id
+- Created indexes for performance: idx_memes_template_id, idx_memes_created_at
+- Implemented database connection test via Next.js API route (/api/test-db)
+- Created test page at /db-test to verify connection status
+- Used Playwright to automate verification and screenshot capture
+
+**Verification Steps Completed:**
+✅ Supabase project credentials configured in .env file
+✅ Database migration script created and executed (scripts/create-tables.js)
+✅ Templates table exists in Supabase database
+✅ Memes table exists in Supabase database
+✅ Database connection tested from Next.js app via API route
+✅ No connection errors in console
+✅ Browser-based verification shows both tables accessible
+
+**Screenshot:** screenshots/supabase-connection.png
+
+**Status:** All verification steps passed - marking task as complete (passes: true)

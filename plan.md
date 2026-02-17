@@ -44,7 +44,7 @@ We are building a website called Memegen, similar to the internal site at Google
     "Test database connection from Next.js app",
     "Confirm no connection errors in console"
   ],
-  "passes": false
+  "passes": true
 }
 
 {
