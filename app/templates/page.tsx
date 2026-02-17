@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
+import Link from 'next/link';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -41,9 +42,10 @@ export default async function TemplatesPage() {
         {templates && templates.length > 0 ? (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
             {templates.map((template) => (
-              <div
+              <Link
                 key={template.id}
-                className="group cursor-pointer bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-200 transform hover:-translate-y-1"
+                href={`/create/${template.id}`}
+                className="group cursor-pointer bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-200 transform hover:-translate-y-1 block"
               >
                 <div className="aspect-square relative bg-gray-100 rounded-t-lg overflow-hidden">
                   <img
@@ -58,7 +60,7 @@ export default async function TemplatesPage() {
                   </h3>
                   <p className="text-xs text-gray-500 mt-1 capitalize">{template.category}</p>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         ) : (

@@ -203,3 +203,50 @@ Activity Document
 **Screenshot:** screenshots/browse-template-library.png
 
 **Status:** All verification steps passed - marking task as complete (passes: true)
+
+## 2026-02-17 - User Can Select Template to Edit
+
+**Task:** User can select a template to edit
+
+**Changes Made:**
+- Updated /templates page to make template cards clickable using Next.js Link components
+- Created dynamic route at /create/[templateId] for the meme editor
+- Implemented server component page.tsx that fetches template by ID from Supabase
+- Created client component MemeEditor.tsx with:
+  - Real-time text preview overlays (top and bottom text)
+  - Two text input fields with character counters (100 char limit)
+  - Template image display in preview section
+  - Template name and metadata display
+  - "Start Over" button to return to template library
+  - Responsive two-column layout (preview + controls)
+  - White text with black stroke styling for visibility
+  - Generate button (disabled until text is added)
+  - Tips section for user guidance
+- Implemented proper 404 handling with notFound() for invalid template IDs
+- Used CSS text-shadow for text stroke effect on preview overlay
+
+**Verification Steps Completed:**
+✅ Navigate to /templates page and template library loads
+✅ Click on any template card (tested with "Distracted Boyfriend")
+✅ Verify navigation to /create/[templateId] page
+✅ Confirm selected template image displays in editor preview
+✅ Check template loads without console errors
+✅ Verify template metadata (name) shown in header and preview box
+✅ Verify template category displayed
+✅ Test clicking "Start Over" returns to template library
+✅ Test clicking different template ("Drake Hotline Bling") updates editor correctly
+✅ Verify text input fields are visible and functional
+✅ Responsive layout works on desktop viewport (1920x1080)
+✅ All 12 templates are clickable and link to unique editor pages
+
+**Roadblocks & Solutions:**
+- Ports 3000-3002 already in use from previous dev servers
+  - Solution: Started dev server on port 3003 using PORT=3003 npm run dev
+- Needed to separate server and client components
+  - Solution: Created server component for data fetching, client component for interactive UI
+- Text overlay needed good visibility on various image backgrounds
+  - Solution: Used multi-directional text-shadow for black stroke effect around white text
+
+**Screenshot:** screenshots/template-selection.png
+
+**Status:** All verification steps passed - marking task as complete (passes: true)

@@ -121,7 +121,7 @@ We are building a website called Memegen, similar to the internal site at Google
     "Verify template metadata (name) is shown",
     "Test clicking different templates updates editor"
   ],
-  "passes": false
+  "passes": true
 }
 
 ### Meme Creation Flow
