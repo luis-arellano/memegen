@@ -154,7 +154,7 @@ We are building a website called Memegen, similar to the internal site at Google
     "Verify text updates in real-time (< 200ms)",
     "Test with special characters (!@#$%^&*)"
   ],
-  "passes": false
+  "passes": true
 }
 
 {
