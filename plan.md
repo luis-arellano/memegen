@@ -184,7 +184,7 @@ We are building a website called Memegen, similar to the internal site at Google
     "Open downloaded image file",
     "Confirm meme image matches preview with text overlays"
   ],
-  "passes": false
+  "passes": true
 }
 
 {

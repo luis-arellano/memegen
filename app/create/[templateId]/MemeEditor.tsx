@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
 interface Template {
   id: string;
@@ -16,6 +16,112 @@ interface MemeEditorProps {
 export default function MemeEditor({ template }: MemeEditorProps) {
   const [topText, setTopText] = useState('');
   const [bottomText, setBottomText] = useState('');
+  const [isGenerating, setIsGenerating] = useState(false);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  const generateMeme = async () => {
+    setIsGenerating(true);
+
+    try {
+      // Create a canvas element
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      // Create an image element to load the template
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+
+      await new Promise<void>((resolve, reject) => {
+        img.onload = () => resolve();
+        img.onerror = () => reject(new Error('Failed to load image'));
+        img.src = template.image_url;
+      });
+
+      // Set canvas dimensions to match image
+      canvas.width = img.width;
+      canvas.height = img.height;
+
+      // Draw the template image
+      ctx.drawImage(img, 0, 0);
+
+      // Configure text style
+      const fontSize = Math.max(canvas.width / 15, 30);
+      ctx.font = `bold ${fontSize}px Impact, Arial Black, sans-serif`;
+      ctx.fillStyle = 'white';
+      ctx.strokeStyle = 'black';
+      ctx.lineWidth = fontSize / 15;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+
+      // Draw top text
+      if (topText) {
+        const topY = canvas.height * 0.05;
+        const lines = wrapText(ctx, topText.toUpperCase(), canvas.width * 0.9);
+        lines.forEach((line, i) => {
+          const y = topY + i * fontSize * 1.1;
+          ctx.strokeText(line, canvas.width / 2, y);
+          ctx.fillText(line, canvas.width / 2, y);
+        });
+      }
+
+      // Draw bottom text
+      if (bottomText) {
+        const lines = wrapText(ctx, bottomText.toUpperCase(), canvas.width * 0.9);
+        const bottomY = canvas.height - (lines.length * fontSize * 1.1) - canvas.height * 0.05;
+        lines.forEach((line, i) => {
+          const y = bottomY + i * fontSize * 1.1;
+          ctx.strokeText(line, canvas.width / 2, y);
+          ctx.fillText(line, canvas.width / 2, y);
+        });
+      }
+
+      // Convert canvas to blob and download
+      canvas.toBlob((blob) => {
+        if (!blob) return;
+
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.download = `meme-${Date.now()}.png`;
+        link.href = url;
+        link.click();
+        URL.revokeObjectURL(url);
+      }, 'image/png');
+
+    } catch (error) {
+      console.error('Error generating meme:', error);
+      alert('Failed to generate meme. Please try again.');
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  // Helper function to wrap text
+  const wrapText = (ctx: CanvasRenderingContext2D, text: string, maxWidth: number): string[] => {
+    const words = text.split(' ');
+    const lines: string[] = [];
+    let currentLine = '';
+
+    for (const word of words) {
+      const testLine = currentLine ? `${currentLine} ${word}` : word;
+      const metrics = ctx.measureText(testLine);
+
+      if (metrics.width > maxWidth && currentLine) {
+        lines.push(currentLine);
+        currentLine = word;
+      } else {
+        currentLine = testLine;
+      }
+    }
+
+    if (currentLine) {
+      lines.push(currentLine);
+    }
+
+    return lines;
+  };
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -107,13 +213,14 @@ export default function MemeEditor({ template }: MemeEditorProps) {
             {/* Action Buttons */}
             <div className="pt-4 border-t border-gray-200">
               <button
+                onClick={generateMeme}
                 className="w-full px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
-                disabled={!topText && !bottomText}
+                disabled={(!topText && !bottomText) || isGenerating}
               >
-                Generate Meme
+                {isGenerating ? 'Generating...' : 'Generate Meme'}
               </button>
               <p className="mt-2 text-xs text-center text-gray-500">
-                Add text to enable generation
+                {isGenerating ? 'Creating your meme...' : 'Add text to enable generation'}
               </p>
             </div>
           </div>
@@ -129,6 +236,9 @@ export default function MemeEditor({ template }: MemeEditorProps) {
           </ul>
         </div>
       </div>
+
+      {/* Hidden canvas for meme generation */}
+      <canvas ref={canvasRef} className="hidden" />
     </div>
   );
 }
