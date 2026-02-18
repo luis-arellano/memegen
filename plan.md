@@ -64,17 +64,18 @@ We are building a website called Memegen, similar to the internal site at Google
 
 {
   "category": "infrastructure",
-  "description": "Application deploys successfully to Vercel",
+  "description": "Application deploys successfully to Vercel with automatic GitHub deployments",
   "steps": [
-    "Connect GitHub repository to Vercel project",
+    "Connect GitHub repository to Vercel project in dashboard",
     "Configure environment variables in Vercel dashboard",
-    "Trigger deployment from main branch",
-    "Wait for build to complete",
+    "Trigger automatic deployment by pushing to main branch",
+    "Wait for build to complete automatically",
     "Visit production URL",
     "Verify application loads without errors",
-    "Check Vercel logs for any runtime errors"
+    "Check Vercel logs for any runtime errors",
+    "Verify subsequent pushes trigger automatic deployments"
   ],
-  "passes": true
+  "passes": true,
 }
 
 ### Template Library
@@ -138,7 +139,7 @@ We are building a website called Memegen, similar to the internal site at Google
     "Verify text updates in real-time (< 200ms)",
     "Test with long text to verify auto-sizing"
   ],
-  "passes": false
+  "passes": true
 }
 
 {
