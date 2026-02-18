@@ -169,7 +169,7 @@ We are building a website called Memegen, similar to the internal site at Google
     "Verify texts don't overlap with each other",
     "Test on mobile viewport for responsive text sizing"
   ],
-  "passes": false
+  "passes": true
 }
 
 {

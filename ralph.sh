@@ -1,12 +1,12 @@
 #!/bin/bash
 
 # Ralph Wiggum Loop for Memegen Project
-# This script runs Claude Code in a continuous loop, feeding it the PROMPT.md file
-# until the task is complete or max iterations is reached.
+# This script runs ralph-once.sh in a continuous loop
+# until all tasks are complete or max iterations is reached.
 
 # Configuration
 MAX_ITERATIONS=${MAX_ITERATIONS:-50}  # Default to 50, override with env var
-PROMPT_FILE="PROMPT.md"
+RALPH_ONCE="./ralph-once.sh"
 ITERATION=0
 
 # Colors for output
@@ -19,15 +19,18 @@ echo -e "${GREEN}========================================${NC}"
 echo -e "${GREEN}  Ralph Wiggum Loop - Memegen Project${NC}"
 echo -e "${GREEN}========================================${NC}"
 echo -e "Max iterations: ${MAX_ITERATIONS}"
-echo -e "Prompt file: ${PROMPT_FILE}"
+echo -e "Ralph-once script: ${RALPH_ONCE}"
 echo ""
 
-# Check if PROMPT.md exists
-if [ ! -f "$PROMPT_FILE" ]; then
-    echo -e "${RED}Error: $PROMPT_FILE not found!${NC}"
-    echo "Please create a PROMPT.md file with your task description."
+# Check if ralph-once.sh exists and is executable
+if [ ! -f "$RALPH_ONCE" ]; then
+    echo -e "${RED}Error: $RALPH_ONCE not found!${NC}"
+    echo "Please ensure ralph-once.sh exists in the current directory."
     exit 1
 fi
+
+# Make sure ralph-once.sh is executable
+chmod +x "$RALPH_ONCE"
 
 # Show initial story count if plan.md exists
 if [ -f "plan.md" ]; then
@@ -48,16 +51,23 @@ while [ $ITERATION -lt $MAX_ITERATIONS ]; do
     echo -e "${GREEN}Iteration $ITERATION / $MAX_ITERATIONS${NC}"
     echo -e "${GREEN}========================================${NC}"
 
-    # Run claude with the prompt, capture output AND display it in real-time
-    result=$(cat "$PROMPT_FILE" | claude --dangerously-skip-permissions 2>&1 | tee /dev/tty)
+    # Run ralph-once.sh to complete ONE task, capture output
+    result=$("$RALPH_ONCE" 2>&1 | tee /dev/tty)
     EXIT_CODE=$?
 
     echo ""  # Add spacing after output
 
-    # Check for completion markers
+    # Check for full completion marker
     if [[ "$result" == *"<promise>COMPLETE</promise>"* ]]; then
-        echo -e "${GREEN}✓✓✓ Task marked COMPLETE after $ITERATION iterations${NC}"
+        echo -e "${GREEN}✓✓✓ All tasks marked COMPLETE after $ITERATION iterations${NC}"
         exit 0
+    fi
+
+    # Check if single task completed successfully
+    if [[ "$result" == *"RALPH-ONCE-COMPLETE"* ]]; then
+        echo -e "${GREEN}✓ Single task completed in iteration $ITERATION${NC}"
+    else
+        echo -e "${YELLOW}⚠ Task may not have completed fully in iteration $ITERATION${NC}"
     fi
 
     # Check if all stories in plan.md have passes: true
@@ -97,11 +107,11 @@ if [ -f "plan.md" ]; then
         echo -e "${GREEN}✓ All stories completed!${NC}"
     else
         echo -e "${YELLOW}⚠ $REMAINING stories still pending${NC}"
-        echo -e "Tip: Review plan.md and continue with more iterations if needed"
+        echo -e "Tip: Review plan.md and activity.md, or continue with more iterations if needed"
     fi
 fi
 
-# Check if progress file exists
-if [ -f "claude-progress.txt" ]; then
-    echo -e "\n${GREEN}Progress log available: claude-progress.txt${NC}"
+# Check if activity log exists
+if [ -f "activity.md" ]; then
+    echo -e "\n${GREEN}Activity log available: activity.md${NC}"
 fi

@@ -24,13 +24,13 @@ Make one git commit for that task only with a clear message.
 
 Do not git init, do not change remotes, do not push.
 
-CRITICAL: After completing ONE task and making the commit, you MUST exit immediately:
+CRITICAL: After completing ONE task and making the commit, you MUST stop immediately:
 1. Do NOT look for another task
 2. Do NOT continue to the next task
-3. Output 'Task complete - exiting session.'
-4. Use the /exit command to end the session
+3. Output exactly this line: 'RALPH-ONCE-COMPLETE'
+4. Stop your response immediately after that line
 
-If ALL tasks have passes true, output <promise>COMPLETE</promise> then use /exit."
+If ALL tasks have passes true, output exactly this line: '<promise>COMPLETE</promise>' then stop."
 
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
